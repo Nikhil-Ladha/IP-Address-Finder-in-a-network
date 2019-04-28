@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>IP Address</title>
+</head>
+<body>
+<h2 style="text-align:center;">Find Your Required IP Addresses!</h2>
+<br>
+Enter the Starting IP:
+<input type=number maxlength=3 id="a" size=1> . <input type=number maxlength=3 id="b" size=1> .
+<input type=number maxlength=3 id="c" size=1> . <input type=number maxlength=3 id="d" size=1>
+<br><br>
+Enter the Ending IP:
+<input type=number maxlength=3 id="a1" size=1> . <input type=number maxlength=3 id="b1" size=1> .
+<input type=number maxlength=3 id="c1" size=1> . <input type=number maxlength=3 id="d1" size=1>
+<br><br>
+<button onclick="start()">Find</button><br><br>
+<img src="load.gif" alt="Executing...." style="display:none" id="load">
+<p id="exec" style="display:none"><b>Executing....</b></p>
+Please wait for the execution process to complete, then an alert will pop indicating that the process has completed...<br><br>
+<button onclick="local()">Find Your IP Address</button>
+<button onclick="location.reload()">Clear Output</button>
+<script>
+function start(){
+var a=parseInt(document.getElementById("a").value);
+var b=parseInt(document.getElementById("b").value);
+var c=parseInt(document.getElementById("c").value);
+var d=parseInt(document.getElementById("d").value);
+var a1=parseInt(document.getElementById("a1").value);
+var b1=parseInt(document.getElementById("b1").value);
+var c1=parseInt(document.getElementById("c1").value);
+var d1=parseInt(document.getElementById("d1").value);
+var time,t;
+var myObj= new ActiveXObject("WScript.Shell");
+myObj.Run('cmd.exe /c erase i.txt & erase i1.txt & erase i2.txt & erase i3.txt & erase i4.txt & erase i5.txt & erase i6.txt & erase i7.txt & erase i8.txt',0,true);
+document.body.innerHTML+="<br><br>Range entered-:"+a+"."+b+"."+c+"."+d+" - "+a1+"."+b1+"."+c1+"."+d1;
+document.getElementById("load").style.display="block";
+document.getElementById("exec").style.display="block";
+if(a>a1){
+  var cmmnd='cmd.exe /c echo INVALID INPUT>>i8.txt';
+  myObj.Run(cmmnd,0,true);
+  t=-1;
+}
+else{
+ if(a==a1 && b==b1 && c==c1 && d==d1){
+  var cmmnd='cmd.exe /c ping '+a+'.'+b+'.'+c+'.'+d+' -n 1 -w 10 | find "Reply">>ip.txt';
+  myObj.Run(cmmnd,0,true);
+  t=1;
+ }
+ else if(a==a1 && b==b1 && c==c1 && d<d1){
+  var cmmnd='cmd.exe /c FOR /L %i IN ('+d+',1,'+d1+') DO @ping '+a+'.'+b+'.'+c+'.%i -n 1 -w 10 | find "Reply">>ip.txt';
+  myObj.Run(cmmnd,0,true);
+  t=2;
+  time=(d1-d)*250;
+ }
+ else if(a==a1 && b==b1 && c<c1){
+  var x=c1-1;
+  var z=c;
+  z++;
+    var cmmnd='cmd.exe /c FOR /L %j IN ('+d+',1,255) DO @ping '+a+'.'+b+'.'+c+'.%j -n 1 -w 10 | find "Reply">>ip.txt';
+    var cmmnd1='cmd.exe /c FOR /L %i IN ('+z+',1,'+x+') DO FOR /L %j IN (1,1,255) DO @ping '+a+'.'+b+'.%i.%j -n 1 -w 100 | find "Reply">>ip1.txt';
+    var cmmnd2='cmd.exe /c FOR /L %j IN (1,1,'+d1+') DO @ping '+a+'.'+b+'.'+c1+'.%j -n 1 -w 10 | find "Reply">>ip2.txt';
+    myObj.Run(cmmnd,0,true);
+    myObj.Run(cmmnd1,0,true);
+    myObj.Run(cmmnd2,0,true);
+  t=3;
+  time=(255-d)*250 + (c1-(c+1))*25500 + d1*250;
+ }
+ else if(a==a1 && b<b1){
+  var x=b1-1;
+  var w=c; 
+  w++;
+  var z=b;
+  z++; 
+  var y=c1-1;
+    var cmmnd='cmd.exe /c FOR /L %k IN ('+d+',1,255) DO @ping '+a+'.'+b+'.'+c+'.%k -n 1 -w 10 | find "Reply">>ip.txt';
+    var cmmnd1='cmd.exe /c FOR /L %j IN ('+w+',1,255) DO FOR /L %k IN (1,1,255) DO @ping '+a+'.'+b+'.%j.%k -n 1 -w 10 | find "Reply">>ip1.txt';
+    var cmmnd2='cmd.exe /c FOR /L %i IN ('+z+',1,'+x+') DO FOR /L %j IN (1,1,255) DO FOR /L %k IN (1,1,255)  DO @ping '+a+'.%i.%j.%k -n 1 -w 100 | find "Reply">>ip2.txt';
+    var cmmnd3='cmd.exe /c FOR /L %j IN (0,1,'+y+') DO FOR /L %k IN (1,1,255) DO @ping '+a+'.'+b1+'.%j.%k -n 1 -w 10 | find "Reply">>ip3.txt';
+    var cmmnd4='cmd.exe /c FOR /L %k IN (0,1,'+d1+') DO @ping '+a+'.'+b1+'.'+c1+'.%k -n 1 -w 100 | find "Reply">>ip4.txt';
+    myObj.Run(cmmnd,0,true);
+    myObj.Run(cmmnd1,0,true);
+    myObj.Run(cmmnd2,0,true);
+    myObj.Run(cmmnd3,0,true); 
+    myObj.Run(cmmnd4,0,true); 
+  t=4;
+  time=(255-d)*250 + (255-c)*25500 + (b1-(b+1))*25500 + d1*250;
+ }
+ else if(a<a1){
+  var x=c;
+  x++;
+  var y=a;
+  y++;
+  var z=a1-1;
+  var w=b;
+  w++;
+    var cmmnd='cmd.exe /c FOR /L %k IN ('+d+',1,255) DO @ping '+a+'.'+b+'.'+c+'.%k -n 1 -w 10 | find "Reply">>ip.txt';
+    var cmmnd1='cmd.exe /c FOR /L %j IN ('+x+',1,255) DO FOR /L %k IN (1,1,255) DO @ping '+a+'.'+b+'.%j.%k -n 1 -w 10 | find "Reply">>ip1.txt';
+    var cmmnd2='cmd.exe /c FOR /L %i IN ('+w+',1,255) DO FOR /L %j IN (1,1,255) DO FOR /L %k IN (1,1,255) DO @ping '+a+'.%i.%j.%k -n 1 -w 10 | find "Reply">>ip2.txt';
+    var cmmnd3='cmd.exe /c FOR /L %i IN ('+y+',1,'+z+') DO FOR /L %j IN (1,1,255) DO FOR /L %k IN (1,1,255) DO FOR /L %m IN (1,1,255) DO @ping %i.%j.%k.%m -n 1 -w 10 | find "Reply">>ip3.txt';
+    myObj.Run(cmmnd,0,true);
+    myObj.Run(cmmnd1,0,true);
+    myObj.Run(cmmnd2,0,true);
+    myObj.Run(cmmnd3,0,true); 
+  x=b1-1;
+  y=c1-1;
+    var cmmnd='cmd.exe /c FOR /L %i IN (0,1,'+x+') DO FOR /L %j IN (1,1,255) DO FOR /L %k IN (1,1,255) DO @ping '+a1+'.%i.%j.%k -n 1 -w 10 | find "Reply">>ip4.txt';
+    var cmmnd1='cmd.exe /c FOR /L %i IN (1,1,'+y+') DO FOR /L %k IN (1,1,255) DO @ping '+a1+'.'+b1+'.%i.%k -n 1 -w 10 | find "Reply">>ip5.txt';
+    var cmmnd2='cmd.exe /c FOR /L %k IN (1,1,'+d1+') DO @ping '+a1+'.'+b1+'.'+c1+'.%k -n 1 -w 10 | find "Reply">>ip6.txt';
+    myObj.Run(cmmnd,0,true);
+    myObj.Run(cmmnd1,0,true);
+    myObj.Run(cmmnd2,0,true);
+  t=5;
+  time=(255-d)*250 + (255-c)*25500 + (255-b)*25500 + (a1-(a+1))*25500 + d1*250;
+ }
+ else{}
+}
+if(t==-1){
+setTimeout(function display(){
+alert("Process Completed!");
+document.getElementById("load").style.display="none";
+document.getElementById("exec").style.display="none";
+readFile();},500);}
+if(t==1){
+setTimeout(function display(){
+alert("Process Completed!");
+document.getElementById("load").style.display="none";
+document.getElementById("exec").style.display="none";
+readFile();},500);}
+if(t==2){
+setTimeout(function display(){
+alert("Process Completed!");
+document.getElementById("load").style.display="none";
+document.getElementById("exec").style.display="none";
+readFile();},time);}
+if(t==3){
+setTimeout(function display(){
+alert("Process Completed!");
+document.getElementById("load").style.display="none";
+document.getElementById("exec").style.display="none";
+readFile();},time);}
+if(t==4){
+setTimeout(function display(){
+alert("Process Completed!");
+document.getElementById("load").style.display="none";
+document.getElementById("exec").style.display="none";
+readFile();},time);}
+if(t==5){
+setTimeout(function display(){
+alert("Process Completed!");
+document.getElementById("load").style.display="none";
+document.getElementById("exec").style.display="none";
+readFile();},time);}
+}
+
+function readFile(){
+document.body.innerHTML+="<br><br>IP's Found:<br><br>";
+var path="i.txt";
+var path1="i1.txt";
+var path2="i2.txt";
+var path3="i3.txt";
+var path4="i4.txt";
+var path5="i5.txt";
+var path6="i6.txt";
+var path7="i7.txt";
+var path8="i8.txt";
+var s=0;
+var fso=new ActiveXObject("Scripting.FileSystemObject");
+var obj=new ActiveXObject("WScript.Shell");
+if(fso.FileExists("ip.txt")){
+obj.Run('cmd.exe /c for /f "tokens=3" %i in (ip.txt) do echo %i>>i.txt',0,true);
+obj.Run('cmd.exe /c erase ip.txt',0,true);}
+if(fso.FileExists("ip1.txt")){
+obj.Run('cmd.exe /c for /f "tokens=3" %i in (ip1.txt) do echo %i>>i1.txt',0,true);
+obj.Run('cmd.exe /c erase ip1.txt',0,true);}
+if(fso.FileExists("ip2.txt")){
+obj.Run('cmd.exe /c for /f "tokens=3" %i in (ip2.txt) do echo %i>>i2.txt',0,true);
+obj.Run('cmd.exe /c erase ip2.txt',0,true);}
+if(fso.FileExists("ip3.txt")){
+obj.Run('cmd.exe /c for /f "tokens=3" %i in (ip3.txt) do echo %i>>i3.txt',0,true);
+obj.Run('cmd.exe /c erase ip3.txt',0,true);}
+if(fso.FileExists("ip4.txt")){
+obj.Run('cmd.exe /c for /f "tokens=3" %i in (ip4.txt) do echo %i>>i4.txt',0,true);
+obj.Run('cmd.exe /c erase ip4.txt',0,true);}
+if(fso.FileExists("ip5.txt")){
+obj.Run('cmd.exe /c for /f "tokens=3" %i in (ip5.txt) do echo %i>>i5.txt',0,true);
+obj.Run('cmd.exe /c erase ip5.txt',0,true);}
+if(fso.FileExists("ip6.txt")){
+obj.Run('cmd.exe /c for /f "tokens=3" %i in (ip6.txt) do echo %i>>i6.txt',0,true);
+obj.Run('cmd.exe /c erase ip6.txt',0,true);}
+if(fso.FileExists("ip7.txt")){
+obj.Run('cmd.exe /c for /f "tokens=3" %i in (ip7.txt) do echo %i>>i7.txt',0,true);
+obj.Run('cmd.exe /c erase ip7.txt',0,true);}
+
+setTimeout(function read(){
+if(fso.FileExists(path)){
+ iStream=fso.OpenTextFile(path);
+ while(!iStream.AtEndOfStream){
+  document.body.innerHTML += iStream.ReadLine()+'<br/>';
+  s=1;
+ }
+ iStream.Close();}
+
+if(fso.FileExists(path1)){
+ iStream=fso.OpenTextFile(path1);
+ while(!iStream.AtEndOfStream){
+  document.body.innerHTML += iStream.ReadLine()+'<br/>';
+  s=1;
+ }
+ iStream.Close(); }
+
+if(fso.FileExists(path2)){
+ iStream=fso.OpenTextFile(path2);
+ while(!iStream.AtEndOfStream){
+  document.body.innerHTML += iStream.ReadLine()+'<br/>';
+  s=1;
+ }
+ iStream.Close(); } 
+
+if(fso.FileExists(path3)){
+ iStream=fso.OpenTextFile(path3);
+ while(!iStream.AtEndOfStream){
+  document.body.innerHTML += iStream.ReadLine()+'<br/>';
+  s=1;
+ }
+ iStream.Close(); }
+
+if(fso.FileExists(path4)){
+ iStream=fso.OpenTextFile(path4);
+ while(!iStream.AtEndOfStream){
+  document.body.innerHTML += iStream.ReadLine()+'<br/>';
+  s=1;
+ }
+ iStream.Close(); }
+
+if(fso.FileExists(path5)){
+ iStream=fso.OpenTextFile(path5);
+ while(!iStream.AtEndOfStream){
+  document.body.innerHTML += iStream.ReadLine()+'<br/>';
+  s=1;
+ }
+ iStream.Close(); }
+
+if(fso.FileExists(path6)){
+ iStream=fso.OpenTextFile(path6);
+ while(!iStream.AtEndOfStream){
+  document.body.innerHTML += iStream.ReadLine()+'<br/>';
+  s=1;
+ }
+ iStream.Close(); }
+
+if(fso.FileExists(path7)){
+ iStream=fso.OpenTextFile(path7);
+ while(!iStream.AtEndOfStream){
+  document.body.innerHTML += iStream.ReadLine()+'<br/>';
+  s=1;
+ }
+ iStream.Close(); }
+
+if(fso.FileExists(path8)){
+ iStream=fso.OpenTextFile(path8);
+ while(!iStream.AtEndOfStream){
+  document.body.innerHTML += iStream.ReadLine()+'<br/>';
+  s=1;
+ }
+ iStream.Close(); }
+
+if(s==0)
+ {
+  document.body.innerHTML +="EITHER INVALID INPUT OR NO IP's FOUND!!";
+ }},1200);
+}
+
+function local(){
+document.body.innerHTML +="<br><br>Local IP is:<br>";
+var myObj= new ActiveXObject("WScript.Shell");
+myObj.Run('cmd.exe /c ipconfig | findstr /C:"IPv4 Address">>localip.txt');
+var pat="localip.txt";
+setTimeout(function display(){
+var fso=new ActiveXObject("Scripting.FileSystemObject");
+iStream=fso.OpenTextFile(pat);
+ while(!iStream.AtEndOfStream){
+  document.body.innerHTML += iStream.ReadLine()+'<br/>';
+ }
+myObj.Run('cmd.exe /c erase localip.txt');
+iStream.Close();},500); 
+}
+</script>
+</body>
+</html>
+
+
+
